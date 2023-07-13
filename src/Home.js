@@ -46,7 +46,7 @@ const Home = ({username_now,showLogin,age_now,index,userData}) => {
 
     const [seat,setSeat]=useState([])
     useEffect(() => {
-        fetch("https://api-eeksapi-eeksapi.vercel.app/api/seat")
+        fetch("https://eeksapi-api.vercel.app/api/seat")
         .then(res => res.json())
         .then(data => {
             setSeat(data)
