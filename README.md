@@ -1,5 +1,5 @@
 <h1 align="center">SEA CINEMA</h1>
-<p>by Farel Winalda</p>
+<p align="center>by Farel Winalda</p>
 
 <div align="center">
    Solution for Software Engineering Task from  <a href="http://devchallenges.io" target="_blank">Compfest.id</a>.
