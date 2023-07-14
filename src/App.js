@@ -19,6 +19,7 @@ function App() {
   const [isShowSignup,showSignup] = useState(false)
   const [isShowLogout,showLogout] = useState(false)
   const [index,setindex]=useState(0)
+  const [dataseats,setseats] = useState([])
 
   const [userData,setUserData]=useState('')
   const fetchData = () => {
@@ -48,13 +49,14 @@ function App() {
         .then((res) => res.json())
         .then((data) => {
           setSeat(data);
+          setseats(data[0].seat_data[0].seat)
         })
         .catch((error) => {
           console.error("Error fetching seat data:", error);
         });
     };
     fetchData2();
-    const interval = setInterval(fetchData2, 30000);
+    const interval = setInterval(fetchData2, 20000);
     return () => {
       clearInterval(interval);
     };
@@ -154,6 +156,7 @@ function App() {
         addData(newData)
         showLogin(true)
         showsmall_success(true)
+        alert("Data created successfully")
       }
       else{
         showsmall(true)
@@ -290,7 +293,7 @@ function App() {
         <div className='content'>
           <Switch>
             <Route exact path="/">
-              <Home username_now={username_now} showLogin={showLogin} age_now={age_now} index={index} userData={userData} seat={seat}/>
+              <Home username_now={username_now} showLogin={showLogin} age_now={age_now} index={index} userData={userData} seat={seat} dataseats={dataseats}/>
             </Route>
             <Route path="/MyTicket">
             { isLogin =="Logout" && <Myticket username_now={username_now} userData={userData} index={index} seat={seat}/>}

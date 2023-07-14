@@ -38,7 +38,6 @@ const Myticket = ({username_now,userData,index,seat}) => {
     }
 
     function editanotherDataById(updatedData) {
-    console.log(updatedData)
     axios
         .put(`https://eeksapi-api.vercel.app/api/seat/1`, updatedData)
         .then((response) => {
@@ -357,6 +356,8 @@ const Myticket = ({username_now,userData,index,seat}) => {
 
     editanotherDataById(anotherData)
     }
+
+    // alert("Refund Successful")
 
     const [isCancel,setCancel]=useState(false)
     function hiderestore(ticket){

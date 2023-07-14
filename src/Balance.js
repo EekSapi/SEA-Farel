@@ -106,6 +106,7 @@ const Balance = ({ username_now,index }) => {
                 id :userData[index].id
             }
             editDataById(updatedData)
+            alert("Topup Successful")
 
             setvalue(0)
         }
@@ -130,6 +131,7 @@ const Balance = ({ username_now,index }) => {
             id :userData[index].id
         }
         editDataById(updatedData)
+        alert("Withdrawal Successful")
     }
 
     const Topup = () =>{

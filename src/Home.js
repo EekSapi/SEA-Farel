@@ -7,7 +7,7 @@ import minus_symbol from "./minus.svg"
 
 
 
-const Home = ({username_now,showLogin,age_now,index,userData,seat}) => {
+const Home = ({username_now,showLogin,age_now,index,userData,seat,dataseats}) => {
     const [movie, setMovie] = useState([]);
     useEffect(() => {
         fetch("https://seleksi-sea-2023.vercel.app/api/movies")
@@ -44,6 +44,7 @@ const Home = ({username_now,showLogin,age_now,index,userData,seat}) => {
         };
       }, []);
 
+    
     const [hoverMovie, sethoverMovie] = useState(null);
     const showDesc = (movie) => {
         sethoverMovie(movie);
@@ -120,6 +121,7 @@ const Home = ({username_now,showLogin,age_now,index,userData,seat}) => {
                 id :userData[index].id
             }
             editDataById(updatedData)
+            alert("Topup Successful")
 
             setvalue(0)
         }
@@ -204,7 +206,6 @@ const Home = ({username_now,showLogin,age_now,index,userData,seat}) => {
     const [selectedSeats, setSelectedSeats] = useState([]);
     const [max_seat,showmax]=useState(false)
     const [no_seat,shownoseat]=useState(false)
-    const [seats,setseats] = useState([])
     const Seat = ({ seatData }) => {
         const { number, status } = seatData;
         const isSelected = selectedSeats.includes(number);
@@ -250,12 +251,10 @@ const Home = ({username_now,showLogin,age_now,index,userData,seat}) => {
       }
       
       
-      const SeatContainer = ({ seats, selectedSeats, setSelectedSeats,movie }) => {
-        setseats(seat[0].seat_data[0].seat)
+      const SeatContainer = ({ dataseats, selectedSeats, setSelectedSeats,movie }) => {
         return (
           <div className="seat-container">
-            
-            {seats.map((seat) => (
+            {dataseats.map((seat) => (
               <Seat
                 key={seat.number}
                 seatData={seat}
@@ -279,7 +278,6 @@ const Home = ({username_now,showLogin,age_now,index,userData,seat}) => {
     }
     
     function editanotherDataById(updatedData) {
-        console.log(updatedData)
         axios
             .put(`https://eeksapi-api.vercel.app/api/seat/1`, updatedData)
             .then((response) => {
@@ -598,14 +596,13 @@ const Home = ({username_now,showLogin,age_now,index,userData,seat}) => {
             }
 
             editanotherDataById(anotherData)
-
-            console.log(updatedData)
             editDataById(updatedData)
             ischeckup(null)
             isselect(null)
             setActiveMovie(null)
             settimeselect(null)
             setSelectedSeats([])
+            alert("Payment Successful")
         }
         else{
             showtopup()
@@ -661,7 +658,7 @@ const Home = ({username_now,showLogin,age_now,index,userData,seat}) => {
                                     <div className="screen-title">Movie Title : {movie.title}</div>
                                     <div className="screen-time">Time : {timeselect}</div>
                                     <SeatContainer
-                                        seats={seats}
+                                        dataseats={dataseats}
                                         selectedSeats={selectedSeats}
                                         setSelectedSeats={setSelectedSeats}
                                         movie={movie}
