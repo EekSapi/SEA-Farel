@@ -7,7 +7,7 @@ import minus_symbol from "./minus.svg"
 
 
 
-const Home = ({username_now,showLogin,age_now,index,userData}) => {
+const Home = ({username_now,showLogin,age_now,index,userData,seat}) => {
     const [movie, setMovie] = useState([]);
     useEffect(() => {
         fetch("https://seleksi-sea-2023.vercel.app/api/movies")
@@ -21,7 +21,7 @@ const Home = ({username_now,showLogin,age_now,index,userData}) => {
     const [history_temp,sethistory]=useState([])
     const [ticket_temp,setticket]=useState([])
     const fetchData = () => {
-        fetch("https://eeksapi-api.vercel.app/api/data")
+        fetch("http://localhost:5000/api/data")
           .then(res => res.json())
           .then(data => {
             balanceupdate(data[index].balance)
@@ -43,15 +43,6 @@ const Home = ({username_now,showLogin,age_now,index,userData}) => {
           clearTimeout(fetchData);
         };
       }, []);
-
-    const [seat,setSeat]=useState([])
-    useEffect(() => {
-        fetch("https://eeksapi-api.vercel.app/api/seat")
-        .then(res => res.json())
-        .then(data => {
-            setSeat(data)
-        })
-    },[]);
 
     const [hoverMovie, sethoverMovie] = useState(null);
     const showDesc = (movie) => {
@@ -100,216 +91,6 @@ const Home = ({username_now,showLogin,age_now,index,userData}) => {
     const hidecheckup = (movie) => {
         isselect(movie)
         ischeckup(null)
-    };
-
-    const Timelist = (title) =>{
-        let Time=[]
-        for (let i=0;i<seat.length;i++){
-            if(title.title===seat[i].title){
-                for (let j=0;j<seat[i].seat_data.length;j++){
-                    Time.push(seat[i].seat_data[j].time)
-                }
-            }
-        }
-        const [ActiveTime, setActiveTime] = useState(null);
-        function timechoose(e,time){
-            setActiveTime(time)
-            showsmall(false)
-            settimeselect(e.target.textContent)
-        }
-        return Time.map((time, i) => {
-            const isTime = ActiveTime === time;
-            return(
-                <div onClick={(e)=>timechoose(e,time)} className={`time-box ${isTime ? 'time-click' : 'hidden'}`} key={i}>
-                    <div className="time-option">{time}</div>
-                </div>
-            )
-        })
-
-    }
-
-    const [timeselect,settimeselect] = useState(null)
-    const [small,showsmall]=useState(false)
-    const [age_require,showage]=useState(false)
-    function seatshow(movie,username_now){
-        if(username_now==null){
-            showLogin(true)
-        }
-        else{
-            if(Number(age_now)>=movie.age_rating){
-                showage(false)
-                if(timeselect==null){
-                    showsmall(true)
-                }
-                else{
-                    showPageSeat(movie)
-                }
-            }
-            else{
-                showage(true)
-            }
-        }
-    }
-
-    const [selectedSeats, setSelectedSeats] = useState([]);
-    const [max_seat,showmax]=useState(false)
-    const [no_seat,shownoseat]=useState(false)
-    const Seat = ({ seatNumber }) => {
-      const isSelected = selectedSeats.includes(seatNumber);
-    
-      const handleClick = () => {
-        if (isSelected) {
-          setSelectedSeats((prevSelectedSeats) => prevSelectedSeats.filter((seat) => seat !== seatNumber));
-        } else {
-          if (selectedSeats.length < 6) {
-            setSelectedSeats((prevSelectedSeats) => [...prevSelectedSeats, seatNumber])
-          }
-        }
-      };
-    
-      if(selectedSeats.length == 6){
-        showmax(true)
-        shownoseat(false)
-      }
-      else if(selectedSeats.length == 0){
-        shownoseat(true)
-      }
-      else{
-        showmax(false)
-        shownoseat(false)
-      }
-
-      const seatClassName = isSelected ? "seat-wrapper clicked" : "seat-wrapper unclicked";
-    
-      return (
-        <div className={seatClassName} onClick={handleClick}>
-          {seatNumber}
-        </div>
-      );
-    };
-    
-      
-    const SeatContainer = () => {
-    return (
-        <div className="seat-container">
-                <Seat seatNumber="1" />
-                <Seat seatNumber="2" />
-                <Seat seatNumber="3" />
-                <Seat seatNumber="4" />
-                <Seat seatNumber="9" />
-                <Seat seatNumber="10" />
-                <Seat seatNumber="11" />
-                <Seat seatNumber="12" />
-                <Seat seatNumber="17" />
-                <Seat seatNumber="18" />
-                <Seat seatNumber="19" />
-                <Seat seatNumber="20" />
-                <Seat seatNumber="25" />
-                <Seat seatNumber="26" />
-                <Seat seatNumber="27" />
-                <Seat seatNumber="28" />
-                <Seat seatNumber="33" />
-                <Seat seatNumber="34" />
-                <Seat seatNumber="35" />
-                <Seat seatNumber="36" />
-                <Seat seatNumber="41" />
-                <Seat seatNumber="42" />
-                <Seat seatNumber="43" />
-                <Seat seatNumber="44" />
-                <Seat seatNumber="49" />
-                <Seat seatNumber="50" />
-                <Seat seatNumber="51" />
-                <Seat seatNumber="52" />
-                <Seat seatNumber="57" />
-                <Seat seatNumber="58" />
-                <Seat seatNumber="59" />
-                <Seat seatNumber="60" />
-        {/* Add more seat components as needed */}
-        </div>
-    );
-    };
-    const SeatContainer2 = () => {
-    return (
-        <div className="seat-container2">
-        <Seat seatNumber="5" />
-        <Seat seatNumber="6" />
-        <Seat seatNumber="7" />
-        <Seat seatNumber="8" />
-        <Seat seatNumber="13" />
-        <Seat seatNumber="14" />
-        <Seat seatNumber="15" />
-        <Seat seatNumber="16" />
-        <Seat seatNumber="21" />
-        <Seat seatNumber="22" />
-        <Seat seatNumber="23" />
-        <Seat seatNumber="24" />
-        <Seat seatNumber="29" />
-        <Seat seatNumber="30" />
-        <Seat seatNumber="31" />
-        <Seat seatNumber="32" />
-        <Seat seatNumber="37" />
-        <Seat seatNumber="38" />
-        <Seat seatNumber="39" />
-        <Seat seatNumber="40" />
-        <Seat seatNumber="45" />
-        <Seat seatNumber="46" />
-        <Seat seatNumber="47" />
-        <Seat seatNumber="48" />
-        <Seat seatNumber="53" />
-        <Seat seatNumber="54" />
-        <Seat seatNumber="55" />
-        <Seat seatNumber="56" />
-        <Seat seatNumber="61" />
-        <Seat seatNumber="62" />
-        <Seat seatNumber="63" />
-        <Seat seatNumber="64" />
-        </div>
-    );
-    };
-
-    function editDataById(updatedData) {
-    axios
-        .put(`https://eeksapi-api.vercel.app/api/data/${userData[index].id}`, updatedData)
-        .then((response) => {
-        console.log(response.data.message); 
-        })
-        .catch((error) => {
-        console.error(error);
-        });
-    }
-
-    const confirmpayment = (movie) =>{
-        if (balance>=(selectedSeats.length*movie.ticket_price)){
-            balanceupdate(balance-(selectedSeats.length*movie.ticket_price))
-            history_temp.push("Payment Rp. "+(selectedSeats.length*movie.ticket_price)+" for ticket movie : ("+(movie.title)+") seats : ("+selectedSeats+") succesful "+getTime())
-            ticket_temp.push(
-                {
-                    title:movie.title,
-                    time: timeselect,
-                    seat :selectedSeats,
-                }
-            )
-            let updatedData={
-                name :userData[index].name,
-                age :userData[index].age,
-                username :userData[index].username,
-                password:userData[index].password,
-                balance :balance-(selectedSeats.length*movie.ticket_price),
-                history :history_temp,
-                ticket :ticket_temp,
-                id :userData[index].id
-            }
-            console.log(updatedData)
-            editDataById(updatedData)
-            ischeckup(null)
-            isselect(null)
-            setActiveMovie(null)
-            settimeselect(null)
-            setSelectedSeats([])
-        }
-        else{
-            showtopup()
-        }
     }
 
     const [thevalue,setvalue] = useState(0)
@@ -371,6 +152,466 @@ const Home = ({username_now,showLogin,age_now,index,userData}) => {
         )
     }
 
+    const Timelist = (title) =>{
+        let Time=[]
+        for (let i=0;i<seat.length;i++){
+            if(title.title===seat[i].title){
+                for (let j=0;j<seat[i].seat_data.length;j++){
+                    Time.push(seat[i].seat_data[j].time)
+                }
+            }
+        }
+        const [ActiveTime, setActiveTime] = useState(null);
+        function timechoose(e,time){
+            setActiveTime(time)
+            showsmall(false)
+            settimeselect(e.target.textContent)
+        }
+        return Time.map((time, i) => {
+            const isTime = ActiveTime === time;
+            return(
+                <div onClick={(e)=>timechoose(e,time)} className={`time-box ${isTime ? 'time-click' : 'hidden'}`} key={i}>
+                    <div className="time-option">{time}</div>
+                </div>
+            )
+        })
+
+    }
+
+    const [timeselect,settimeselect] = useState(null)
+    const [small,showsmall]=useState(false)
+    const [age_require,showage]=useState(false)
+    function seatshow(movie,username_now){
+        if(username_now==null){
+            showLogin(true)
+        }
+        else{
+            if(Number(age_now)>=movie.age_rating){
+                showage(false)
+                if(timeselect==null){
+                    showsmall(true)
+                }
+                else{
+                    showPageSeat(movie)
+                }
+            }
+            else{
+                showage(true)
+            }
+        }
+    }
+
+    const [selectedSeats, setSelectedSeats] = useState([]);
+    const [max_seat,showmax]=useState(false)
+    const [no_seat,shownoseat]=useState(false)
+    const [seats,setseats] = useState([])
+    const Seat = ({ seatData }) => {
+        const { number, status } = seatData;
+        const isSelected = selectedSeats.includes(number);
+      
+        const handleClick = () => {
+          if (isSelected) {
+            setSelectedSeats((prevSelectedSeats) =>
+              prevSelectedSeats.filter((seat) => seat !== number)
+            );
+          } else {
+            if (selectedSeats.length < 6 && status === "available") {
+              setSelectedSeats((prevSelectedSeats) => [...prevSelectedSeats, number]);
+            }
+          }
+        };
+      
+        let seatClassName;
+        if (isSelected) {
+          seatClassName = "seat-wrapper clicked";
+        } else if (status === "reserved") {
+          seatClassName = "seat-wrapper reserved";
+        } else {
+          seatClassName = "seat-wrapper unclicked";
+        }
+
+        if(selectedSeats.length == 6){
+            showmax(true)
+            shownoseat(false)
+        }
+        else if(selectedSeats.length == 0){
+            shownoseat(true)
+        }
+        else{
+            showmax(false)
+            shownoseat(false)
+        }
+      
+        return (
+          <div className={seatClassName} onClick={handleClick}>
+            {number}
+          </div>
+        )
+      }
+      
+      
+      const SeatContainer = ({ seats, selectedSeats, setSelectedSeats,movie }) => {
+        setseats(seat[0].seat_data[0].seat)
+        return (
+          <div className="seat-container">
+            
+            {seats.map((seat) => (
+              <Seat
+                key={seat.number}
+                seatData={seat}
+                selectedSeats={selectedSeats}
+                setSelectedSeats={setSelectedSeats}
+              />
+            ))}
+          </div>
+        )
+      }
+
+    function editDataById(updatedData) {
+    axios
+        .put(`http://localhost:5000/api/data/${userData[index].id}`, updatedData)
+        .then((response) => {
+        console.log(response.data.message); 
+        })
+        .catch((error) => {
+        console.error(error)
+        })
+    }
+    
+    function editanotherDataById(updatedData) {
+        console.log(updatedData)
+        axios
+            .put(`http://localhost:5000/api/seat/1`, updatedData)
+            .then((response) => {
+            console.log(response.data.message); 
+            })
+            .catch((error) => {
+            console.error(error)
+            })
+        }
+
+    const confirmpayment = (movie) =>{
+        if (balance>=(selectedSeats.length*movie.ticket_price)){
+            balanceupdate(balance-(selectedSeats.length*movie.ticket_price))
+            history_temp.push("Payment Rp. "+(selectedSeats.length*movie.ticket_price)+" for ticket movie : ("+(movie.title)+") seats : ("+selectedSeats+") succesful "+getTime())
+            ticket_temp.push(
+                {
+                    title:movie.title,
+                    time: timeselect,
+                    seat :selectedSeats,
+                    price:selectedSeats.length*movie.ticket_price
+                }
+            )
+            let updatedData={
+                name :userData[index].name,
+                age :userData[index].age,
+                username :userData[index].username,
+                password:userData[index].password,
+                balance :balance-(selectedSeats.length*movie.ticket_price),
+                history :history_temp,
+                ticket :ticket_temp,
+                id :userData[index].id
+            }
+
+            let seatData=seat[0].seat_data[0].seat
+
+            const Data = seatData.map((seat) => {
+                if (selectedSeats.includes(seat.number)) {
+                  return { ...seat, status: "reserved" };
+                }
+                return seat;
+              });
+
+            let anotherData={
+                title:"Fast X",
+                seat_data:[
+                    {
+                        time:"09:00",
+                        seat:Data
+                    },
+                    {time:"12:00",seat:[
+                        {number:1,status:"available"},
+                        {number:2,status:"available"},
+                        {number:3,status:"available"},
+                        {number:4,status:"available"},
+                        {number:5,status:"available"},
+                        {number:6,status:"available"},
+                        {number:7,status:"available"},
+                        {number:8,status:"available"},
+                        {number:9,status:"available"},
+                        {number:10,status:"available"},
+                        {number:11,status:"available"},
+                        {number:12,status:"available"},
+                        {number:13,status:"available"},
+                        {number:14,status:"available"},
+                        {number:15,status:"available"},
+                        {number:16,status:"available"},
+                        {number:17,status:"available"},
+                        {number:18,status:"available"},
+                        {number:19,status:"available"},
+                        {number:20,status:"available"},
+                        {number:21,status:"available"},
+                        {number:22,status:"available"},
+                        {number:23,status:"available"},
+                        {number:24,status:"available"},
+                        {number:25,status:"available"},
+                        {number:26,status:"available"},
+                        {number:27,status:"available"},
+                        {number:28,status:"available"},
+                        {number:29,status:"available"},
+                        {number:30,status:"available"},
+                        {number:31,status:"available"},
+                        {number:32,status:"available"},
+                        {number:33,status:"available"},
+                        {number:34,status:"available"},
+                        {number:35,status:"available"},
+                        {number:36,status:"available"},
+                        {number:37,status:"available"},
+                        {number:38,status:"available"},
+                        {number:39,status:"available"},
+                        {number:40,status:"available"},
+                        {number:41,status:"available"},
+                        {number:42,status:"available"},
+                        {number:43,status:"available"},
+                        {number:44,status:"available"},
+                        {number:45,status:"available"},
+                        {number:46,status:"available"},
+                        {number:47,status:"available"},
+                        {number:48,status:"available"},
+                        {number:49,status:"available"},
+                        {number:50,status:"available"},
+                        {number:51,status:"available"},
+                        {number:52,status:"available"},
+                        {number:53,status:"available"},
+                        {number:54,status:"available"},
+                        {number:55,status:"available"},
+                        {number:56,status:"available"},
+                        {number:57,status:"available"},
+                        {number:58,status:"available"},
+                        {number:59,status:"available"},
+                        {number:60,status:"available"},
+                        {number:61,status:"available"},
+                        {number:62,status:"available"},
+                        {number:63,status:"available"},
+                        {number:64,status:"available"},
+                    ]},
+                    {time:"15:00",seat:[
+                        {number:1,status:"available"},
+                        {number:2,status:"available"},
+                        {number:3,status:"available"},
+                        {number:4,status:"available"},
+                        {number:5,status:"available"},
+                        {number:6,status:"available"},
+                        {number:7,status:"available"},
+                        {number:8,status:"available"},
+                        {number:9,status:"available"},
+                        {number:10,status:"available"},
+                        {number:11,status:"available"},
+                        {number:12,status:"available"},
+                        {number:13,status:"available"},
+                        {number:14,status:"available"},
+                        {number:15,status:"available"},
+                        {number:16,status:"available"},
+                        {number:17,status:"available"},
+                        {number:18,status:"available"},
+                        {number:19,status:"available"},
+                        {number:20,status:"available"},
+                        {number:21,status:"available"},
+                        {number:22,status:"available"},
+                        {number:23,status:"available"},
+                        {number:24,status:"available"},
+                        {number:25,status:"available"},
+                        {number:26,status:"available"},
+                        {number:27,status:"available"},
+                        {number:28,status:"available"},
+                        {number:29,status:"available"},
+                        {number:30,status:"available"},
+                        {number:31,status:"available"},
+                        {number:32,status:"available"},
+                        {number:33,status:"available"},
+                        {number:34,status:"available"},
+                        {number:35,status:"available"},
+                        {number:36,status:"available"},
+                        {number:37,status:"available"},
+                        {number:38,status:"available"},
+                        {number:39,status:"available"},
+                        {number:40,status:"available"},
+                        {number:41,status:"available"},
+                        {number:42,status:"available"},
+                        {number:43,status:"available"},
+                        {number:44,status:"available"},
+                        {number:45,status:"available"},
+                        {number:46,status:"available"},
+                        {number:47,status:"available"},
+                        {number:48,status:"available"},
+                        {number:49,status:"available"},
+                        {number:50,status:"available"},
+                        {number:51,status:"available"},
+                        {number:52,status:"available"},
+                        {number:53,status:"available"},
+                        {number:54,status:"available"},
+                        {number:55,status:"available"},
+                        {number:56,status:"available"},
+                        {number:57,status:"available"},
+                        {number:58,status:"available"},
+                        {number:59,status:"available"},
+                        {number:60,status:"available"},
+                        {number:61,status:"available"},
+                        {number:62,status:"available"},
+                        {number:63,status:"available"},
+                        {number:64,status:"available"},
+                    ]},
+                    {time:"18:00",seat:[
+                        {number:1,status:"available"},
+                        {number:2,status:"available"},
+                        {number:3,status:"available"},
+                        {number:4,status:"available"},
+                        {number:5,status:"available"},
+                        {number:6,status:"available"},
+                        {number:7,status:"available"},
+                        {number:8,status:"available"},
+                        {number:9,status:"available"},
+                        {number:10,status:"available"},
+                        {number:11,status:"available"},
+                        {number:12,status:"available"},
+                        {number:13,status:"available"},
+                        {number:14,status:"available"},
+                        {number:15,status:"available"},
+                        {number:16,status:"available"},
+                        {number:17,status:"available"},
+                        {number:18,status:"available"},
+                        {number:19,status:"available"},
+                        {number:20,status:"available"},
+                        {number:21,status:"available"},
+                        {number:22,status:"available"},
+                        {number:23,status:"available"},
+                        {number:24,status:"available"},
+                        {number:25,status:"available"},
+                        {number:26,status:"available"},
+                        {number:27,status:"available"},
+                        {number:28,status:"available"},
+                        {number:29,status:"available"},
+                        {number:30,status:"available"},
+                        {number:31,status:"available"},
+                        {number:32,status:"available"},
+                        {number:33,status:"available"},
+                        {number:34,status:"available"},
+                        {number:35,status:"available"},
+                        {number:36,status:"available"},
+                        {number:37,status:"available"},
+                        {number:38,status:"available"},
+                        {number:39,status:"available"},
+                        {number:40,status:"available"},
+                        {number:41,status:"available"},
+                        {number:42,status:"available"},
+                        {number:43,status:"available"},
+                        {number:44,status:"available"},
+                        {number:45,status:"available"},
+                        {number:46,status:"available"},
+                        {number:47,status:"available"},
+                        {number:48,status:"available"},
+                        {number:49,status:"available"},
+                        {number:50,status:"available"},
+                        {number:51,status:"available"},
+                        {number:52,status:"available"},
+                        {number:53,status:"available"},
+                        {number:54,status:"available"},
+                        {number:55,status:"available"},
+                        {number:56,status:"available"},
+                        {number:57,status:"available"},
+                        {number:58,status:"available"},
+                        {number:59,status:"available"},
+                        {number:60,status:"available"},
+                        {number:61,status:"available"},
+                        {number:62,status:"available"},
+                        {number:63,status:"available"},
+                        {number:64,status:"available"},
+                    ]},
+                    {time:"21:00",seat:[
+                        {number:1,status:"available"},
+                        {number:2,status:"available"},
+                        {number:3,status:"available"},
+                        {number:4,status:"available"},
+                        {number:5,status:"available"},
+                        {number:6,status:"available"},
+                        {number:7,status:"available"},
+                        {number:8,status:"available"},
+                        {number:9,status:"available"},
+                        {number:10,status:"available"},
+                        {number:11,status:"available"},
+                        {number:12,status:"available"},
+                        {number:13,status:"available"},
+                        {number:14,status:"available"},
+                        {number:15,status:"available"},
+                        {number:16,status:"available"},
+                        {number:17,status:"available"},
+                        {number:18,status:"available"},
+                        {number:19,status:"available"},
+                        {number:20,status:"available"},
+                        {number:21,status:"available"},
+                        {number:22,status:"available"},
+                        {number:23,status:"available"},
+                        {number:24,status:"available"},
+                        {number:25,status:"available"},
+                        {number:26,status:"available"},
+                        {number:27,status:"available"},
+                        {number:28,status:"available"},
+                        {number:29,status:"available"},
+                        {number:30,status:"available"},
+                        {number:31,status:"available"},
+                        {number:32,status:"available"},
+                        {number:33,status:"available"},
+                        {number:34,status:"available"},
+                        {number:35,status:"available"},
+                        {number:36,status:"available"},
+                        {number:37,status:"available"},
+                        {number:38,status:"available"},
+                        {number:39,status:"available"},
+                        {number:40,status:"available"},
+                        {number:41,status:"available"},
+                        {number:42,status:"available"},
+                        {number:43,status:"available"},
+                        {number:44,status:"available"},
+                        {number:45,status:"available"},
+                        {number:46,status:"available"},
+                        {number:47,status:"available"},
+                        {number:48,status:"available"},
+                        {number:49,status:"available"},
+                        {number:50,status:"available"},
+                        {number:51,status:"available"},
+                        {number:52,status:"available"},
+                        {number:53,status:"available"},
+                        {number:54,status:"available"},
+                        {number:55,status:"available"},
+                        {number:56,status:"available"},
+                        {number:57,status:"available"},
+                        {number:58,status:"available"},
+                        {number:59,status:"available"},
+                        {number:60,status:"available"},
+                        {number:61,status:"available"},
+                        {number:62,status:"available"},
+                        {number:63,status:"available"},
+                        {number:64,status:"available"},
+                    ]}
+                ],
+                id:1
+            }
+
+            editanotherDataById(anotherData)
+
+            console.log(updatedData)
+            editDataById(updatedData)
+            ischeckup(null)
+            isselect(null)
+            setActiveMovie(null)
+            settimeselect(null)
+            setSelectedSeats([])
+        }
+        else{
+            showtopup()
+        }
+    }
+    
     const Movielist = () => {
         return movie.map((movie, i) => {
             const isHover = hoverMovie === movie;
@@ -419,15 +660,19 @@ const Home = ({username_now,showLogin,age_now,index,userData}) => {
                                     <div className="screen">Screen</div>
                                     <div className="screen-title">Movie Title : {movie.title}</div>
                                     <div className="screen-time">Time : {timeselect}</div>
-                                    <SeatContainer/>
-                                    <SeatContainer2/>
+                                    <SeatContainer
+                                        seats={seats}
+                                        selectedSeats={selectedSeats}
+                                        setSelectedSeats={setSelectedSeats}
+                                        movie={movie}
+                                    />
                                 </div>
                                 <label className="selected-seat">{"Selected Seat : "+selectedSeats}</label>
                                 <button className="confirm-seat" onClick={()=>showcheckup(movie)}>Choose Seat</button>
                                 <label className="price-seat">{"Total Price : Rp. "+(selectedSeats.length*movie.ticket_price)}</label>
                                 {max_seat && <small className="small-max-seat">Only 6 seats can be chosen per transaction</small>}
                                 {no_seat && <small className="small-max-seat">Select at leat 1 seat</small>}
-                                <div onClick={()=>hidePageSeat(movie)} className="specific-close"><img alt="" src={back_symbol}/></div>
+                                <div onClick={()=>hidePageSeat(movie)} className="specific-close"><img alt="" src={back_symbol} className="button-close"/></div>
                             </div>
                         </div>
                     </div>
@@ -460,7 +705,7 @@ const Home = ({username_now,showLogin,age_now,index,userData}) => {
 
     return (
         <div className="homepage">
-            <div className="airing">Now Airing</div>
+            <div className="airing">Now Showing</div>
             <div className="Movie-container">
                 <Movielist />
                 {isshowtopup && (<Topup />)}

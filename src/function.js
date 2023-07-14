@@ -116,7 +116,7 @@ function dating(x){
 }
 
 function addData(newData) {
-    axios.post('https://eeksapi-api.vercel.app/api/data', newData)
+    axios.post('http://localhost:5000/api/data', newData)
         .then(response => {
             console.log(response.data.message); // Response message from the API
         })
@@ -155,5 +155,6 @@ function getTime(){
                     + currentdate.getSeconds();
     return datetime
 }
+
 
 export {year,rated,dotting,dating,addData,deleteDataById,editDataById,getTime}

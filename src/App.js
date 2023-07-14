@@ -22,7 +22,7 @@ function App() {
 
   const [userData,setUserData]=useState('')
   const fetchData = () => {
-    fetch("https://eeksapi-api.vercel.app/api/data")
+    fetch("http://localhost:5000/api/data")
       .then(res => res.json())
       .then(data => {
         setUserData(data);
@@ -36,6 +36,25 @@ function App() {
       fetchData();
     }, 30000);
   
+    return () => {
+      clearInterval(interval);
+    };
+  }, []);
+
+  const [seat, setSeat] = useState([]);
+  useEffect(() => {
+    const fetchData2 = () => {
+      fetch("http://localhost:5000/api/seat")
+        .then((res) => res.json())
+        .then((data) => {
+          setSeat(data);
+        })
+        .catch((error) => {
+          console.error("Error fetching seat data:", error);
+        });
+    };
+    fetchData2();
+    const interval = setInterval(fetchData2, 30000);
     return () => {
       clearInterval(interval);
     };
@@ -93,7 +112,9 @@ function App() {
               to={window.location} className="toggle"> signup
             </Link>
           </div>
-          {small_success && <small className="small-success">Account has registered !<br />Please wait a moment to Login</small>}
+          {small_success && 
+          <small className="small-success">Account has registered !<br />Please kindly wait for 30 seconds to login</small>
+          }
           <div><button type="submit" className="confirm" form="login">Login</button></div>
           <div><button className="cancel" onClick={()=>showLogin(false)}>Cancel</button></div>
         </div>
@@ -129,8 +150,6 @@ function App() {
       };
 
       if(username_valid===true){
-        // setusername_now(username)
-        // setisLogin("Logout")
         showSignup(false)
         addData(newData)
         showLogin(true)
@@ -271,10 +290,10 @@ function App() {
         <div className='content'>
           <Switch>
             <Route exact path="/">
-              <Home username_now={username_now} showLogin={showLogin} age_now={age_now} index={index} userData={userData}/>
+              <Home username_now={username_now} showLogin={showLogin} age_now={age_now} index={index} userData={userData} seat={seat}/>
             </Route>
             <Route path="/MyTicket">
-            { isLogin =="Logout" && <Myticket username_now={username_now} index={index}/>}
+            { isLogin =="Logout" && <Myticket username_now={username_now} userData={userData} index={index} seat={seat}/>}
             </Route>
             <Route path="/Balance">
             { isLogin =="Logout" && <Balance username_now={username_now} index={index}/>}

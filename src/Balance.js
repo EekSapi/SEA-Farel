@@ -10,7 +10,7 @@ const Balance = ({ username_now,index }) => {
     const [history_temp,sethistory]=useState([])
 
     const fetchData = () => {
-        fetch("https://eeksapi-api.vercel.app/api/data")
+        fetch("http://localhost:5000/api/data")
           .then(res => res.json())
           .then(data => {
             setUserData(data);
@@ -26,7 +26,7 @@ const Balance = ({ username_now,index }) => {
             console.error("Error fetching data:", error);
           })
           .finally(() => {
-            setTimeout(fetchData, 10000);
+            setTimeout(fetchData, 5000);
           });
       };
       
@@ -80,7 +80,7 @@ const Balance = ({ username_now,index }) => {
 
     function editDataById(updatedData) {
         axios
-          .put(`https://eeksapi-api.vercel.app/api/data/${userData[index].id}`, updatedData)
+          .put(`http://localhost:5000/api/data/${userData[index].id}`, updatedData)
           .then((response) => {
             console.log(response.data.message); 
           })
