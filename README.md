@@ -2,7 +2,7 @@
 <p align="center">by Farel Winalda</p>
 
 <div align="center">
-   Solution for Software Engineering Task from  <a href="http://devchallenges.io" target="_blank">Compfest.id</a>.
+   Solution for Software Engineering Task from  <a href="http://www.compfest.id/" target="_blank">Compfest.id</a>.
 </div>
 
 <div align="center">
