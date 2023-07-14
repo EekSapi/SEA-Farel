@@ -115,7 +115,7 @@ function App() {
             </Link>
           </div>
           {small_success && 
-          <small className="small-success">Account has registered !<br />Please kindly wait for 30 seconds to login</small>
+          <small className="small-success">Account will be registered !<br />Please kindly wait for 30 seconds to login</small>
           }
           <div><button type="submit" className="confirm" form="login">Login</button></div>
           <div><button className="cancel" onClick={()=>showLogin(false)}>Cancel</button></div>
