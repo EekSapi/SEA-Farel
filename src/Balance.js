@@ -26,7 +26,7 @@ const Balance = ({ username_now,index }) => {
             console.error("Error fetching data:", error);
           })
           .finally(() => {
-            setTimeout(fetchData, 30000);
+            setTimeout(fetchData, 10000);
           });
       };
       
